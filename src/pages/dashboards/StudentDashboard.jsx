@@ -32,8 +32,6 @@ const Student_Dashboard = () => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  //       Decode user from token
-  // ======================== */
   useEffect(() => {
     const token = localStorage.getItem("authToken");
 
@@ -239,7 +237,7 @@ const Student_Dashboard = () => {
           <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
             {/* <p className="text-">Welcome {username} 🎉</p> */}
             <p style={{ fontSize: "18px", fontWeight: 600, margin: 0 }}>
-              Welcome, {username} 🎉
+              {username} 
             </p>
 
             <div

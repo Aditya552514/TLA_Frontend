@@ -15,10 +15,12 @@ import {
 } from '@ant-design/icons';
 import { Button, Input, Layout, Menu, theme } from 'antd';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { decodeToken } from "../../utils/jwt";
 
 const { Header, Sider, Content } = Layout;
 
 const Admin_Dashboard = () => {
+  const [username, setUsername] = useState("");
   const [collapsed, setCollapsed] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
@@ -28,6 +30,27 @@ const Admin_Dashboard = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+
+  useEffect(() => {
+      const token = localStorage.getItem("authToken");
+  
+      if (!token) {
+        setUsername("Admin");
+        return;
+      }
+  
+      try {
+        const decoded = decodeToken(token);
+        const email = decoded?.email;
+  
+        // 👇 extract name before "@"
+        const name = email ? email.split("@")[0] : "Admin";
+  
+        setUsername(name);
+      } catch {
+        setUsername("Admin");
+      }
+    }, []);
 
   // Menu items with navigation routes
   const menuItems = [
@@ -119,10 +142,11 @@ const Admin_Dashboard = () => {
                 }}
               />
           </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-            <MessageOutlined style={{ fontSize: 20, cursor: 'pointer' }} />
-            <BellOutlined style={{ fontSize: 20, cursor: 'pointer' }} />
+          <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+            {/* <p className="text-">Welcome {username} 🎉</p> */}
+            <p style={{ fontSize: "18px", fontWeight: 600, margin: 0 }}>
+              {username} 
+            </p>
 
             <div className="dropdown" style={{ position: 'relative' }} ref={dropdownRef}>
               <UserOutlined
