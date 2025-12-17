@@ -43,7 +43,8 @@ const Login = () => {
     const user = decodeToken(res.data.token);
 
     // ✅ STORE USER (THIS WAS MISSING)
-    localStorage.setItem("user", JSON.stringify(user));
+    // localStorage.setItem("user", JSON.stringify(user));
+    
 
     // ✅ Role-based navigation
     if (user?.role === "admin") {

@@ -10,10 +10,12 @@ import {
   BarChartOutlined,
   CalendarOutlined,
   MessageOutlined,
-  BellOutlined
+  BellOutlined,
+  LogoutOutlined
 } from '@ant-design/icons';
 import { Button, Input, Layout, Menu, theme } from 'antd';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { decodeToken } from '../../utils/jwt';
 
 const { Header, Sider, Content } = Layout;
 
@@ -23,6 +25,7 @@ const InstructorDashboard = () => {
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const [username,setUsername]=useState()
 
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -50,6 +53,28 @@ const InstructorDashboard = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+
+  useEffect(()=>{
+    const token=localStorage.getItem("authToken")
+
+    if(!token) return setUsername("Instructor")
+    
+    try {
+      const decoded=decodeToken(token)
+      const email=decoded.email
+      const name=email.split('@')[0]
+      setUsername(name)
+    } catch {
+      setUsername('Instructor')
+    }
+  })
+
+
+  const handleLogout=()=>{
+    navigate('/')
+    localStorage.clear()
+  }
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -88,6 +113,36 @@ const InstructorDashboard = () => {
           onClick={handleMenuClick}
           items={menuItems}
         />
+
+           <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            width: "100%",
+            padding: "12px",
+            borderTop: "1px solid rgba(255,255,255,0.15)",
+            background: "#001529", // keeps Ant Design dark theme
+          }}
+        >
+          <Button
+            danger
+            type="primary"
+            icon={<LogoutOutlined />}
+            onClick={handleLogout}
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: collapsed ? "center" : "flex-start",
+              gap: collapsed ? 0 : 8,
+            }}
+          >
+            {!collapsed && "Logout"}
+          </Button>
+        </div>
+
+
       </Sider>
 
       <Layout style={{ marginLeft: collapsed ? 80 : 250, transition: 'margin-left 0.2s' }}>
@@ -120,8 +175,11 @@ const InstructorDashboard = () => {
           </div> 
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-            <MessageOutlined style={{ fontSize: 20, cursor: 'pointer' }} />
-            <BellOutlined style={{ fontSize: 20, cursor: 'pointer' }} />
+            {/* <MessageOutlined style={{ fontSize: 20, cursor: 'pointer' }} />
+            <BellOutlined style={{ fontSize: 20, cursor: 'pointer' }} /> */}
+            <p style={{ fontSize: "18px", fontWeight: 600, margin: 0 }}>
+              Welcome, {username} 🎉
+            </p>
 
             <div className="dropdown" style={{ position: 'relative' }} ref={dropdownRef}>
               <UserOutlined
@@ -155,6 +213,7 @@ const InstructorDashboard = () => {
                     style={{ padding: '10px 16px', cursor: 'pointer' }}
                     onClick={() => {
                       alert('Logged out');
+                      handleLogout
                       setShowDropdown(false);
                     }}
                   >

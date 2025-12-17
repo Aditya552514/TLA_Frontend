@@ -60,12 +60,6 @@ const Student_Dashboard = () => {
   const menuItems = [
     { key: "/student_dashboard", icon: <HomeOutlined />, label: "Home" },
 
-    // {
-    //   key: "/student_dashboard/attendance",
-    //   icon: <CalendarOutlined />,
-    //   label: "Attendance",
-    // },
-
     {
       key: "/student_dashboard/exams",
       icon: <FileDoneOutlined />,

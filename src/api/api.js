@@ -81,6 +81,10 @@ export const deleteCourse = (id) =>
 export const addLesson = (courseId, data) =>
   API.post(`/courses/${courseId}/lessons`, data);
 
+//get all courses
+export const getAllCoursesLessons = (courseId) =>
+  API.post(`/courses/${courseId}/lessons`);
+
 // ENROLL STUDENT
 export const enrollStudent = (courseId) =>
   API.post(`/courses/${courseId}/enroll`);

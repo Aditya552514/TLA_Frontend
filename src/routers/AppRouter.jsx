@@ -54,6 +54,8 @@ import Admin_createCourses from "../components/adminComponents/Admin_CreateCours
 import UpdateCourse from "../components/courses/UpdateCourse";
 import Admin_updateCourse from "../components/adminComponents/Admin_updateCourse";
 import AddLesson from "../components/courses/AddLesson";
+import Student_CourseDetails from "../components/studentcomponents/Student_CourseDetails";
+import Admin_CourseDetails from "../components/adminComponents/Admin_CourseDetails";
 // import Admin_updateCourse from "../components/adminComponents/Admin_updateCourse";
 
 const AppRouter = () => {
@@ -98,6 +100,8 @@ const AppRouter = () => {
         >
           <Route index element={<Student_Home />} />
           <Route path="courses" element={<Student_Courses />} />
+          {/* <Route path="course/:id" element={<Student_CourseDetails/>}/> */}
+           <Route path="course/:id" element={<Student_CourseDetails />} />
           <Route path="exams" element={<Student_Exams />} />
           <Route path="results" element={<Student_Results />} />
           <Route path="performance" element={<Student_Performance />} />
@@ -119,8 +123,9 @@ const AppRouter = () => {
           <Route path="courses" element={<Admin_Courses />} />
           <Route path="create_courses" element={<Admin_createCourses />} />
           <Route path="courses/:courseId/edit" element={<Admin_updateCourse />} />
+          <Route path="course/:id" element={<Admin_CourseDetails/>}/>
           <Route path = 'courses/:id/add-lesson' element={<AddLesson/>}/>
-          {/* <Route path="courses/:id" element={<CourseDetails/>}/> */}
+          <Route path="courses/:id" element={<CourseDetails/>}/>
           <Route path="allusers" element={<Admin_Users />} />
           <Route path="reports" element={<Admin_Reports />} />
           <Route path="payment" element={<Admin_Payments />} />
