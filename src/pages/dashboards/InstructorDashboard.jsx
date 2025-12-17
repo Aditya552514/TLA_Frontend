@@ -10,14 +10,19 @@ import {
   BarChartOutlined,
   CalendarOutlined,
   MessageOutlined,
-  BellOutlined
+  BellOutlined,
+  LogoutOutlined,
+  
 } from '@ant-design/icons';
 import { Button, Input, Layout, Menu, theme } from 'antd';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { decodeToken } from "../../utils/jwt";
+
 
 const { Header, Sider, Content } = Layout;
 
-const InstructorDashboard = () => {
+const Instructor_Dashboard = () => {
+  const [username, setUsername] = useState("");
   const [collapsed, setCollapsed] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
@@ -27,6 +32,27 @@ const InstructorDashboard = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+
+    useEffect(() => {
+      const token = localStorage.getItem("authToken");
+  
+      if (!token) {
+        setUsername("Instructor");
+        return;
+      }
+  
+      try {
+        const decoded = decodeToken(token);
+        const email = decoded?.email;
+  
+        // 👇 extract name before "@"
+        const name = email ? email.split("@")[0] : "Instructor";
+  
+        setUsername(name);
+      } catch {
+        setUsername("Instructor");
+      }
+    }, []);
 
   // Menu items with navigation routes
   const menuItems = [
@@ -118,6 +144,11 @@ const InstructorDashboard = () => {
                 }}
               />
           </div> 
+          <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+            {/* <p className="text-">Welcome {username} 🎉</p> */}
+            <p style={{ fontSize: "18px", fontWeight: 600, margin: 0 }}>
+              {username} 
+            </p>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
             <MessageOutlined style={{ fontSize: 20, cursor: 'pointer' }} />
@@ -164,6 +195,7 @@ const InstructorDashboard = () => {
               )}
             </div>
           </div>
+          </div>
         </Header>
 
         <Content
@@ -182,4 +214,4 @@ const InstructorDashboard = () => {
   );
 };
 
-export default InstructorDashboard;
+export default Instructor_Dashboard;
